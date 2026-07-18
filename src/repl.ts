@@ -1,39 +1,12 @@
 import * as readline from "node:readline";
-import { commandExit } from "./command_exit.js";
-import { commandHelp } from "./command_help.js";
-
-export type CLICommand = {
-    name: string;
-    description: string;
-    callback: (commands: Record<string, CLICommand>) => void;
-};
-
-export function getCommands(): Record<string, CLICommand> {
-    return {
-        exit: {
-            name: "exit",
-            description: "Exit the Pokedex",
-            callback: commandExit,
-        },
-        help: {
-            name: "help",
-            description: "Lists info on possible commands",
-            callback: commandHelp,
-        }
-        // more commands
-    };
-}
+import { State } from "./state.js";
 
 export function cleanInput(input: string): string[]{
     return input.toLowerCase().trim().split(/\s+/);
 }
 
-export function startREPL(): void{
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-        prompt: "Pokedex > ",
-    });
+export function startREPL(state: State): void{
+    const rl = state.stateInterface;
 
     rl.prompt();
     rl.on("line", (input) => {
@@ -43,11 +16,11 @@ export function startREPL(): void{
             rl.prompt();
         }
 
-        const commands = getCommands();
+        const commands = state.commandRegistry;
         const command = commands[realInput[0]];
 
         if(command){
-            command.callback(commands);
+            command.callback(state);
         }
         else{
             console.log("Unknown command.");

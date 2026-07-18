@@ -1,6 +1,10 @@
-export function commandHelp(){
+import { CLICommand, State } from "./state.js";
+
+export function commandHelp(state: State){
     console.log("Welcome to the Pokedex!\n"+
-        "Usage:\n\n"+
-        "help: Displays a help message\n"+
-        "exit: Exit the Pokedex")
+        "Usage:\n");
+
+    for(const command of Object.values(state.commandRegistry)){
+        console.log(`${command.name}: ${command.description}`);
+    }
 };
