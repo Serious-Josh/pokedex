@@ -5,22 +5,28 @@ export function cleanInput(input: string): string[]{
     return input.toLowerCase().trim().split(/\s+/);
 }
 
-export function startREPL(state: State): void{
+export async function startREPL(state: State): Promise<void>{
     const rl = state.stateInterface;
 
     rl.prompt();
-    rl.on("line", (input) => {
+    rl.on("line", async (input) => {
         const realInput = cleanInput(input);
 
-        if(realInput.length === 0){
+        if(realInput[0] == ""){
             rl.prompt();
+            return;
         }
 
         const commands = state.commandRegistry;
         const command = commands[realInput[0]];
 
         if(command){
-            command.callback(state);
+            try{
+                await command.callback(state);
+            }
+            catch(error: unknown){
+                console.error(`Error: ${error}`);
+            }
         }
         else{
             console.log("Unknown command.");
