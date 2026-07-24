@@ -27,7 +27,7 @@ export function initState(): State{
         prompt: "Pokedex > ",
     }),
         commandRegistry: getCommands(),
-        api: new PokeAPI(),
+        api: new PokeAPI(5_000),
         nextLocationsURL: "",
         prevLocationsURL: "",
     }

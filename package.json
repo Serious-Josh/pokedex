@@ -6,8 +6,7 @@
     "test": "vitest --run",
     "build": "npx tsc",
     "start": "node dist/main.js",
-    "dev": "npx tsc && node dist/main.js",
-    "personalTest": "npx tsc && node dist/test.js"
+    "dev": "npx tsc && node dist/main.js"
   },
   "keywords": [],
   "author": "",
