@@ -22,7 +22,7 @@ export async function startREPL(state: State): Promise<void>{
 
         if(command){
             try{
-                await command.callback(state);
+                await command.callback(state, ...realInput.slice(1));
             }
             catch(error: unknown){
                 console.error(`Error: ${error}`);

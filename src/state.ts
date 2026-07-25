@@ -3,11 +3,12 @@ import { commandExit } from "./command_exit.js";
 import { commandHelp } from "./command_help.js";
 import { PokeAPI } from "./pokeapi.js";
 import { commandMap, commandMapBack } from "./command_map.js";
+import { commandExplore } from "./command_explore.js";
 
 export type CLICommand = {
     name: string;
     description: string;
-    callback: (state: State) => Promise<void>;
+    callback: (state: State, ...args: string[]) => Promise<void>;
 };
 
 export type State = {
@@ -57,6 +58,11 @@ function getCommands(): Record<string, CLICommand> {
             name: "map back",
             description: "Displays previous pages' location area names",
             callback: commandMapBack,
+        },
+        explore: {
+            name: "explore",
+            description: "examine a specific area in more detail",
+            callback: commandExplore,
         }
     };
 }

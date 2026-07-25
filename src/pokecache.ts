@@ -27,7 +27,7 @@ export class Cache {
 
     }
 
-    get<T>(key: string): CacheEntry<T> | undefined{
+    get<T>(key: string): T | undefined{
         const value = this.#cache.get(key);
 
         if(value){
