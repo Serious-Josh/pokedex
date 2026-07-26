@@ -54,6 +54,43 @@ export class PokeAPI {
 
         return data;
     }
+
+    async fetchPokemon(pokemonName: string): Promise<Pokemon>{
+        const pokemonURL = PokeAPI.baseURL + `/pokemon/${pokemonName}`;
+        const speciesURL = PokeAPI.baseURL + `/pokemon-species/${pokemonName}`;
+
+        const resp = await fetch(pokemonURL, {
+            method: "GET"
+        });
+        const data = await resp.json();
+
+        const respSpec = await fetch(speciesURL, {
+            method: "GET"
+        });
+        const dataSpec = await respSpec.json();
+
+        const types = [];
+        for(const entry of data.types){
+            types.push(entry.type.name)
+        }
+
+        return {
+            name: data.name,
+            base_experience: data.base_experience,
+            height: data.height,
+            weight: data.weight,
+            stats: {
+                hp: data.stats[0].base_stat,
+                attack: data.stats[1].base_stat,
+                defense: data.stats[2].base_stat,
+                spAtk: data.stats[3].base_stat,
+                spDef: data.stats[4].base_stat,
+                speed: data.stats[5].base_stat,
+            },
+            types: types,
+            capture_rate: dataSpec.capture_rate,
+        }
+    }
 }
 
 export type ShallowLocations = {
@@ -71,3 +108,20 @@ export type Location = {
         name: string,
     }, version_details: []}],
 };
+
+export type Pokemon = {
+    name: string,
+    base_experience: number,
+    height: number,
+    weight: number,
+    stats: {
+        hp: number,
+        attack: number,
+        defense: number,
+        spAtk: number,
+        spDef: number,
+        speed: number
+    }
+    types: string[],
+    capture_rate: number,
+}
